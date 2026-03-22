@@ -1,6 +1,7 @@
 package com.gbros.tabslite
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.gbros.tabslite.view.createtab.createSongScreen
@@ -35,8 +36,7 @@ import com.gbros.tabslite.view.tabview.tabScreen
  * args between screens to keep each screen definition modular and decoupled
  */
 @Composable
-fun TabsLiteNavGraph() {
-    val navController = rememberNavController()
+fun TabsLiteNavGraph(navController: NavHostController = rememberNavController()) {
     NavHost(navController = navController, startDestination = HOME_ROUTE) {
         homeScreen(
             onNavigateToSearch = navController::navigateToSearch,

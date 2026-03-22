@@ -44,6 +44,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import com.gbros.tabslite.LoadingState
 import com.gbros.tabslite.R
 import com.gbros.tabslite.data.AppDatabase
@@ -84,7 +85,10 @@ fun NavGraphBuilder.searchByTitleScreen(
     onNavigateBack: () -> Unit,
 ) {
     composable(
-        route = TITLE_SEARCH_ROUTE_TEMPLATE.format("{$TITLE_SEARCH_NAV_ARG}")
+        route = TITLE_SEARCH_ROUTE_TEMPLATE.format("{$TITLE_SEARCH_NAV_ARG}"),
+        deepLinks = listOf(
+            navDeepLink { uriPattern = "tabslite://search?query={$TITLE_SEARCH_NAV_ARG}" }
+        )
     ) { navBackStackEntry ->
         val query = URLDecoder.decode(navBackStackEntry.arguments!!.getString(TITLE_SEARCH_NAV_ARG, ""), "utf-8")
         val db = AppDatabase.getInstance(LocalContext.current)

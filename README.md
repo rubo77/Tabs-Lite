@@ -17,3 +17,21 @@ Save songs for offline access by adding them to your Favorites or a playlist. Th
 Quickly find the content you're looking for with a beautiful Material Design built for speed and simplicity. Search hundreds of thousands of available songs by title or author name, 100% free with no ads!
 
 Key changes are as simple as a touch of a button with built in transposition. Or find the fingering for any chord by simply tapping the chord name!
+
+# Deep Links
+
+Tabs Lite supports deep links, allowing external apps or browser links to launch the app and directly start a search.
+
+**Search by title:**
+```
+tabslite://search?query=<search term>
+```
+
+Examples:
+- `tabslite://search?query=Wonderwall` — opens the app and searches for "Wonderwall"
+- `tabslite://search?query=Bon%20Jovi` — opens the app and searches for "Bon Jovi"
+
+You can trigger these links from a browser, another app, or the Android shell with:
+```
+adb shell am start -a android.intent.action.VIEW -d "tabslite://search?query=Wonderwall" com.gbros.tabslite
+```

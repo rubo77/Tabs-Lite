@@ -1,5 +1,6 @@
 package com.gbros.tabslite
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -9,10 +10,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.map
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.gbros.tabslite.data.AppDatabase
 import com.gbros.tabslite.data.DataAccess
 import com.gbros.tabslite.data.FontStyle
@@ -41,6 +45,10 @@ import java.util.Collections
 
 @AndroidEntryPoint
 class HomeActivity : ComponentActivity() {
+    @Volatile
+    private var navController: NavHostController? = null
+    private var pendingDeepLinkIntent: Intent? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()  // enabled by default on Android 15+ (API 35+), but this is for lower Android versions
@@ -58,9 +66,28 @@ class HomeActivity : ComponentActivity() {
                         .fillMaxSize()
                         .background(color = MaterialTheme.colorScheme.background)
                 ) {
-                    TabsLiteNavGraph()
+                    val localNavController = rememberNavController()
+                    SideEffect {
+                        navController = localNavController
+                        pendingDeepLinkIntent?.let { pending ->
+                            pendingDeepLinkIntent = null
+                            localNavController.handleDeepLink(pending)
+                        }
+                    }
+                    TabsLiteNavGraph(navController = localNavController)
                 }
             }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        val nav = navController
+        if (nav != null) {
+            nav.handleDeepLink(intent)
+        } else {
+            pendingDeepLinkIntent = intent
         }
     }
 
