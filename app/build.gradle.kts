@@ -9,8 +9,6 @@ plugins {
     alias(libs.plugins.navigationSafeargs)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.google.services)
-
-    alias(libs.plugins.sentry)
 }
 
 kotlin {
@@ -36,8 +34,8 @@ android {
         minSdk = 24
         targetSdk = 36
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        versionCode = 4200
-        versionName = "4.2.0"
+        versionCode = 4201
+        versionName = "4.2.0.1"
     }
     buildTypes {
         release {
@@ -104,14 +102,4 @@ dependencies {
     // Debug dependencies
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-}
-
-
-sentry {
-    org.set("more-than-solitaire")
-    projectName.set("android")
-
-    // this will upload your source code to Sentry to show it as part of the stack traces
-    // disable if you don't want to expose your sources
-    includeSourceContext.set(true)
 }
